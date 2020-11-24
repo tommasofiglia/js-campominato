@@ -62,6 +62,8 @@ function gameCampoMinato(maxnumber) {
       alert("Numero già inserito in precedenza");
     } else if ((insertNumber > maxnumber) || (insertNumber === 0)) {
       alert("Devi inserire un numero compreso tra 1 e " + maxnumber + "!");
+    } else if (isNaN(insertNumber)) {
+      alert("Quello che hai inserito non è un valore numerico");
     } else {
       userNumbers.push(insertNumber);
 
