@@ -1,33 +1,45 @@
-//Creo un prompt che faccia scegliere all'utente la difficoltà
-var modality = Number(prompt('Scrivi 0 per la modalità a 100 numeri ( Facile ), 1 per quella a 80 numeri ( Media ) e 2 per quella a 50 numeri ( Difficile ) '))
-
-//Creo uno switch case che sfrutti le tre condizioni date attraverso il prompt sopra applicando le funzioni presenti sotto attraverso il cambio dell'argomento "maxnumbers".
-
-switch (modality) {
-  case 0:
-    randomPcNumbers(100);
-    gameCampoMinato(100);
-    break;
-  case 1:
-    randomPcNumbers(80);
-    gameCampoMinato(80);
-  case 2:
-    randomPcNumbers(50);
-    gameCampoMinato(50);
-  default:
-    location.reload();
-}
-
 /*********** SPIEGAZIONE DI QUANTO SEGUE **************
 
-Sotto ho creato tre funzioni diverse.
-La prima è la funzione "verifyInArray", in grado di verificare se un dato numero sia presente o meno in un array. Questa serve per riconoscere la presenza del numero inserito dall'utente nell'array dei numeri già scelti (evitando che l'utente scelga due volte lo stesso numero) e poi per evitare che ci siano dei numeri che si ripetono nell'array di 16 numeri Randomici generati dal pc.
-La seconda funzione invece gestisce la creazione dei 16 numeri randomici per il pc, mentre la terza l'inserimento del numero da parte dell'utente.
+Sotto ho creato e poi utilizzato quattro funzioni diverse.
+
+La prima funzione, che ho chiamato "selectionModality", è una funzione in grado di far scegliere all'utente tra le 3 difficoltà e , attraverso uno switch-case , permette di avviare le due funzioni che permettono rispettivamente l'estrazione dei numeri randomici per il pc ( = bombe) e la scelta dei numeri da parte dell'utente.
+
+La seconda è la funzione che ho nominato "verifyInArray", in grado di verificare se un dato numero sia presente o meno in un array. Questa serve per riconoscere la presenza del numero inserito dall'utente nell'array dei numeri già scelti (evitando che l'utente scelga due volte lo stesso numero) e poi per evitare che ci siano dei numeri che si ripetono nell'array di 16 numeri Randomici generati dal pc.
+
+La terza funzione ("randomPcNumbers") invece gestisce la creazione dei 16 numeri randomici per il pc, mentre la quarta ("gameCampoMinato") l'inserimento del numero da parte dell'utente e il confronto di esso con l'array contenente le "bombe".
 Ho diviso questa parte di codice js in due funzioni diverse anche se avrei potuto crearne una sola avente "maxnumber" come argomento. Ho fatto ciò per una questione di ordine nel mio ragionamento personale e per tenermi allenato con le funzioni.
 
 ****************************************************/
 
-//Creo la funzione che verifichi la presenza di un numero in un determinato array.
+//Funzione che permette all'utente di scegliere la difficoltà
+
+function selectionModality(valuecase0 ,valuecase1 , valuecase2) {
+
+  var modality = Number(prompt('Scrivi 0 per la modalità a 100 numeri ( Facile ), 1 per quella a 80 numeri ( Media ) e 2 per quella a 50 numeri ( Difficile ) '))
+
+  //Switch-case che trasforma la scelta dell'utente (0, 1, 2) in 3 case , ognuno dei quali fa partire le due funzioni "randomPcNumbers" e "gameCampoMinato", le quali avranno come argomento 100, 80 o 50 al posto degli argomenti "valuecase". I valori 100, 80 e 50, verranno inseriti come argomento quando la funzione sarà richiamata
+
+  switch (modality) {
+    case 0:
+    randomPcNumbers(valuecase0);
+    gameCampoMinato(valuecase0);
+    break;
+    case 1:
+    randomPcNumbers(valuecase1);
+    gameCampoMinato(valuecase1);
+    case 2:
+    randomPcNumbers(valuecase2);
+    gameCampoMinato(valuecase2);
+    default:
+    alert("Devi inserire un numero compreso tra 0 e 2 !");
+    location.reload();
+  }
+
+}
+
+selectionModality(100 ,80 ,50 ); //uso di "selectionModality"
+
+//Creo una funzione che verifichi la presenza di un numero in un determinato array.
 
 function verifyInArray(array, number) {
    var i = 0;
@@ -84,10 +96,10 @@ function gameCampoMinato(maxnumber) {
 
       if (pcNumbers.includes(insertNumber)) {
         alert("Hai perso!!! " + "Il tuo punteggio è di " + (userNumbers.length - 1) + " numeri inseriti prima di trovare la bomba!");
-        location.reload();
+        selectionModality(100 ,80 ,50); //uso di "selectionModality" per fare ripartire il gioco
       } else if (userNumbers.length == (maxnumber - 16)) {
         alert("Complimenti! Hai vinto il gioco con un punteggio di " + (userNumbers.length) + " numeri inseriti !!");
-        location.reload();
+        selectionModality(100 ,80 ,50); //uso di "selectionModality" per fare ripartire il gioco
       } else {
         alert("Non hai beccato la bomba, puoi andare avanti");
       }
