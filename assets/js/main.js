@@ -11,9 +11,18 @@ Ho diviso questa parte di codice js in due funzioni diverse anche se avrei potut
 
 ****************************************************/
 
+var pcNumbers;
+
 //Funzione che permette all'utente di scegliere la difficoltà
 
-function selectionModality(valuecase0 ,valuecase1 , valuecase2) {
+function selectionModality(valuecase0 ,valuecase1 , valuecase2, checkGameContinue) {
+
+ var keepGoing = "Y";
+  if (checkGameContinue == 1) {
+    var keepGoing = prompt("Vuoi continuare il gioco? [Y/N]");
+  }
+
+  if (keepGoing == "Y") {
 
   var modality = Number(prompt('Scrivi 0 per la modalità a 100 numeri ( Facile ), 1 per quella a 80 numeri ( Media ) e 2 per quella a 50 numeri ( Difficile ) '))
 
@@ -27,13 +36,17 @@ function selectionModality(valuecase0 ,valuecase1 , valuecase2) {
     case 1:
     randomPcNumbers(valuecase1);
     gameCampoMinato(valuecase1);
+    break;
     case 2:
     randomPcNumbers(valuecase2);
     gameCampoMinato(valuecase2);
+    break;
     default:
     alert("Devi inserire un numero compreso tra 0 e 2 !");
     location.reload();
+    break;
   }
+ }
 
 }
 
@@ -79,7 +92,7 @@ function gameCampoMinato(maxnumber) {
   userNumbers = [];
   console.log(userNumbers);
 
-  i = 0;
+
   while (userNumbers.length < (maxnumber - 16)) {
     var insertNumber = Number(prompt("Inserisci un numero da 1 a " + maxnumber));
 
@@ -90,23 +103,24 @@ function gameCampoMinato(maxnumber) {
     } else if (isNaN(insertNumber)) {
       alert("Quello che hai inserito non è un valore numerico");
     } else {
-      userNumbers.push(insertNumber);
 
       // Creo una if che imposti la condizione per andare avanti, perdere o vincere il gioco quando il numero inserito dall'utente è valido (Cioé se non si ripete)
 
       if (pcNumbers.includes(insertNumber)) {
         alert("Hai perso!!! " + "Il tuo punteggio è di " + (userNumbers.length - 1) + " numeri inseriti prima di trovare la bomba!");
-        selectionModality(100 ,80 ,50); //uso di "selectionModality" per fare ripartire il gioco
+        selectionModality(100 ,80 ,50, 1); //uso di "selectionModality" per fare ripartire il gioco
+        break;
       } else if (userNumbers.length == (maxnumber - 16)) {
         alert("Complimenti! Hai vinto il gioco con un punteggio di " + (userNumbers.length) + " numeri inseriti !!");
-        selectionModality(100 ,80 ,50); //uso di "selectionModality" per fare ripartire il gioco
+        selectionModality(100 ,80 ,50, 1); //uso di "selectionModality" per fare ripartire il gioco
+        break;
       } else {
         alert("Non hai beccato la bomba, puoi andare avanti");
+        userNumbers.push(insertNumber);
       }
 
     }
 
-    i++
   }
 
 }
